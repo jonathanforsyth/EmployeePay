@@ -1,0 +1,50 @@
+import SwiftUI
+
+struct ProfileFormView: View {
+    
+    @Environment(\.colorScheme) var colorScheme
+    @Binding var tabSelection: Int
+    @EnvironmentObject var vm: EmployeeViewModel
+    let hoursWorked = 120...180
+    let currentDept = ["Sales","Management","Senior Management","Hospitality","Sanitation","Other"]
+    
+    var body: some View {
+        NavigationView {
+            VStack {
+                Form {
+                    Section(header: Text("Personal Information:")
+                        .foregroundColor(colorScheme == .dark ? Color.white: Color.black)
+                        .font(.body)
+                        .bold()) {
+                            Picker("Hours per Month", selection: $vm.userData.monthlyHoursWorked) {
+                                ForEach(hoursWorked, id: \.self) {
+                                    Text("\($0)")
+                                }}
+                            
+                            .padding(.horizontal,20)
+                            //                            Picker("Your Current Department", selection: $vm.userData.department) {
+                            //                                ForEach(currentDept, id: \.self) {
+                            //                                    Text ($0)
+                            //                                }
+                            //                            }
+                        }
+                        .navigationTitle("Employee Information")
+                        .toolbar {
+                            NavigationLink(destination: PayRateView(
+                                depts: DeptList.deptList), label: {Text("Pay Charts")
+                                })
+                        }
+                }
+            }
+        }
+        .accentColor(Color(.label))
+        .navigationViewStyle(StackNavigationViewStyle())
+    }
+}
+
+struct ProfileFormView_Previews: PreviewProvider {
+    static var previews: some View {
+        ProfileFormView(tabSelection: .constant(1))
+            .environmentObject(EmployeeViewModel())
+    }
+}
