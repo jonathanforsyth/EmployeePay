@@ -1,0 +1,30 @@
+import Foundation
+
+enum Calculations {
+    private static let pennyRoundingBehavior = NSDecimalNumberHandler(
+        roundingMode: .bankers,
+        scale: 2,
+        raiseOnExactness: false,
+        raiseOnOverflow: true,
+        raiseOnUnderflow: true,
+        raiseOnDivideByZero: true
+    )
+    static func computeMonthlyEarnings(hours hoursWorked: Int, atPayRate payRate: Int) -> Decimal {
+        let base = Decimal(hoursWorked * payRate) as NSDecimalNumber
+        return base.rounding(accordingToBehavior: pennyRoundingBehavior) as Decimal
+    }
+}
+
+extension Array {
+    func chunked(into size: Int) -> [[Element]] {
+        return stride(from: 0, to: count, by: size).map {
+            Array(self[$0 ..< Swift.min($0 + size, count)])
+        }
+    }
+}
+
+
+class EmployeeViewModel: ObservableObject {
+    @Published var userData: Employee =
+    Employee("Charlotte Grote", birthdate: DateComponents(calendar: .current, year: 1965, month: 7, day: 20).date!, hiredate: DateComponents(calendar: .current, year: 2021, month: 12, day: 28).date!, retirementAge: 65, department: .other("Hospitality"), monthlyHoursWorked: 160, regularPayRateIncreases: true, regularPayRateIncreasePercentage: 4, regularPayRateIncreaseYearInterval: 4)
+}
