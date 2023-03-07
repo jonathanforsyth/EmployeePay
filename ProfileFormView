@@ -21,20 +21,19 @@ struct ProfileFormView: View {
                                     Text("\($0)")
                                 }}
                             
-                            .padding(.horizontal,20)
-                            //                            Picker("Your Current Department", selection: $vm.userData.department) {
-                            //                                ForEach(currentDept, id: \.self) {
-                            //                                    Text ($0)
-                            //                                }
-                            //                            }
-                        }
-                        .navigationTitle("Employee Information")
-                        .toolbar {
-                            NavigationLink(destination: PayRateView(
-                                depts: DeptList.deptList), label: {Text("Pay Charts")
-                                })
+                            Picker("Your Current Department", selection: $vm.userData.department) {
+                                ForEach(currentDept, id: \.self) {
+                                    Text ($0)
+                                }
+                            }
                         }
                 }
+            }
+            .navigationTitle("Employee Information")
+            .toolbar {
+                NavigationLink(destination: PayRateView(
+                    depts: DeptList.deptList), label: {Text("Pay Charts")
+                    })
             }
         }
         .accentColor(Color(.label))
